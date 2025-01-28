@@ -6,7 +6,7 @@ export const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center px-6">
         {/* Logo y Título */}
         <div className="flex items-center space-x-4">
-          <img src="/src/assets/logo.png" alt="Logo" className="h-8" /> {/* Cambia esto a tu logo */}
+          <img src="/src/assets/logo-elmanantialsas3.jpg" alt="Logo1" className="h-8" /> {/* Cambia esto a tu logo */}
           <h1 className="text-2xl font-semibold">Mi Empresa</h1> {/* Título de la empresa */}
         </div>
 

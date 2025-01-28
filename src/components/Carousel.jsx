@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import image1 from "../assets/imagen1.jpg";
 import image2 from "../assets/imagen2.jpg";
 import image3 from "../assets/imagen3.jpg";
+import image4 from "../assets/imagen4.jpg";
+import image5 from "../assets/imagen5.jpg";
 
 export const Carousel = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -12,6 +14,8 @@ export const Carousel = () => {
     { src: image1, alt: "Imagen 1" },
     { src: image2, alt: "Imagen 2" },
     { src: image3, alt: "Imagen 3" },
+    { src: image4, alt: "Imagen 4" },
+    { src: image5, alt: "Imagen 5" },
   ];
 
   const totalSlides = images.length;
@@ -19,10 +23,10 @@ export const Carousel = () => {
   // Cambio automático de las imágenes
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % totalSlides);
+      nextSlide();
     }, 5000); // Cambia cada 5 segundos
     return () => clearInterval(interval); // Limpia el intervalo
-  }, [totalSlides]);
+  }, [currentIndex]);
 
   const prevSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex - 1 + totalSlides) % totalSlides);
@@ -32,24 +36,24 @@ export const Carousel = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % totalSlides);
   };
 
-  const goToSlide = (index) => {
-    setCurrentIndex(index);
-  };
-
   return (
-    <div className="relative w-full max-w-4xl mx-auto overflow-hidden pt-16"> {/* Agregado pt-16 para el padding superior */}
+    <div className="relative w-full overflow-hidden">
       {/* Contenedor para las imágenes */}
       <div
         className="flex transition-transform duration-700 ease-in-out"
-        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+        style={{
+          transform: `translateX(-${currentIndex * (100 / (window.innerWidth < 640 ? 1 : 3))}%)`, // Cambia según el tamaño de pantalla
+        }}
       >
         {images.map((image, index) => (
-          <div key={index} className="w-full flex-shrink-0">
-            {/* Imagen individual con ajuste de tamaño */}
+          <div
+            key={index}
+            className="w-full sm:w-1/2 md:w-1/3 flex-shrink-0 p-2 box-border h-full" // Responsividad -Funciona bien en pantalla grande
+          >
             <img
               src={image.src}
               alt={image.alt}
-              className="w-full object-cover h-[60vh] md:h-[70vh]" // Ajuste del alto para pantallas más grandes
+               className="w-full h-full object-cover rounded-lg shadow-lg" // Funciona bien en pantalla grande
             />
           </div>
         ))}
@@ -68,19 +72,6 @@ export const Carousel = () => {
       >
         ❯
       </button>
-
-      {/* Indicadores (puntos) */}
-      <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        {images.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`w-3 h-3 rounded-full ${
-              currentIndex === index ? "bg-blue-500" : "bg-gray-300"
-            }`}
-          ></button>
-        ))}
-      </div>
     </div>
   );
 };
